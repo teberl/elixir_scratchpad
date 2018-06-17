@@ -1,12 +1,18 @@
 defmodule Tennis do
   @moduledoc """
-  Score calling in tennis is unusual in that each point has a corresponding
-  call that is different from its point value.
-  Further explanation: https://en.wikipedia.org/wiki/Tennis_scoring_system#Game_score
+  Score keeping for a tennis match.
   """
 
+  @deuce "deuce"
+  @advantage_one "Advantage player one"
+  @advantage_two "Advantage player two"
+  @winner_one "Player one wins!"
+  @winner_two "Player two wins!"
+
   @doc """
-  get_call_from_score.
+  Returns the corresponding call from the given score.
+
+  Returns String.t.
 
   ## Examples
 
@@ -14,12 +20,6 @@ defmodule Tennis do
       "love - love"
 
   """
-  @deuce "deuce"
-  @advantage_one "Advantage player one"
-  @advantage_two "Advantage player two"
-  @winner_one "Player one wins!"
-  @winner_two "Player two wins!"
-
   @spec get_call_from_score(integer, integer) :: String.t()
   def get_call_from_score(player_one, player_two) do
     case {player_one, player_two} do
@@ -29,12 +29,11 @@ defmodule Tennis do
       {3, 3} ->
         @deuce
 
+      {_, _} when player_one < 4 and player_two < 4 ->
+        concat_call(player_one, player_two)
+
       {_, _} ->
-        if player_one < 4 && player_two < 4 do
-          concat_call(player_one, player_two)
-        else
-          get_call(player_one, player_two)
-        end
+        get_call(player_one, player_two)
     end
   end
 
